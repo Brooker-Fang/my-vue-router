@@ -7,3 +7,41 @@
 + 1、通过history.pushState修改页面地址
 + 2、当history改变时会触发popstate事件，所以可以通过监听popstate事件获取路由地址
 + 3、根据路由地址找到对应组件进行渲染
+
+## vue-router使用
+```js
+import VueRouter from 'vue-router'
+// 注册VueRouter插件
+// Vue.use方法 
+// 1、如果传入的是方法，则调用传入的方法
+// 2、如果传入的是对象，则会调用插件的install静态方法，并传入Vue构造函数
+Vue.use(VueRouter)
+// 创建路由表
+const routes = [
+  {
+    path: '/home',
+    component: Home,
+  },
+  {
+    path: '/about',
+    component: About,
+  },
+]
+// 创建路由对象
+const router = new VueRouter({
+  mode: 'hash',
+  routes
+})
+// 实例化Vue时，在实例上注册router对象
+new Vue({
+  render: h => h(App),
+  router
+}).$mount('#app')
+// 组件中使用<router-view> 替换 渲染组件
+// 组件中使用<router-link> 组件跳转
+// 说明要 注册<router-view>和<router-link>全局组件
+// 组件中 通过this.$router 获取路由对象，并且this.$router.path是
+```
+## 总结，VueRouter需要做以下这些事情
++ 1、Vue.use会先调用VueRouter的静态install方法
++ 2、
