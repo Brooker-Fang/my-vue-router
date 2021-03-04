@@ -9,6 +9,7 @@
 + 3、根据路由地址找到对应组件进行渲染
 
 ## vue-router使用
+### 1、注册vue-router插件
 ```js
 import VueRouter from 'vue-router'
 // 注册VueRouter插件
@@ -16,6 +17,9 @@ import VueRouter from 'vue-router'
 // 1、如果传入的是方法，则调用传入的方法
 // 2、如果传入的是对象，则会调用插件的install静态方法，并传入Vue构造函数
 Vue.use(VueRouter)
+```
+### 2、创建Router实例
+```js
 // 创建路由表
 const routes = [
   {
@@ -32,16 +36,25 @@ const router = new VueRouter({
   mode: 'hash',
   routes
 })
+```
+### Vue实例上挂载router实例
+```js
 // 实例化Vue时，在实例上注册router对象
 new Vue({
   render: h => h(App),
   router
 }).$mount('#app')
-// 组件中使用<router-view> 替换 渲染组件
-// 组件中使用<router-link> 组件跳转
-// 说明要 注册<router-view>和<router-link>全局组件
-// 组件中 通过this.$router 获取路由对象，并且this.$router.path是
+```
+### 组件中使用
+```js
+<router-view></router-view>
+<router-link to="/home"><route-link>
+// 通过this.$router获取路由对象
 ```
 ## 总结，VueRouter需要做以下这些事情
-+ 1、Vue.use会先调用VueRouter的静态install方法
-+ 2、
++ 1、实现install静态方法
++ 2、保存传入的vue构造函数
++ 3、给Vue实例挂载$router
++ 4、注册全局组件<router-view>和<router-link>, router-view组件通过当前url的hash值找到对应组件进行渲染
++ 5、通过变量保存当前url，并使数据变为响应式
++ 6、监听hashchange事件，hash改变时给保存入了
