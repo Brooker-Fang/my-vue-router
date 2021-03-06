@@ -53,8 +53,7 @@ new Vue({
 ```
 ## 总结，VueRouter需要做以下这些事情
 + 1、实现install静态方法
-+ 2、保存传入的vue构造函数
-+ 3、给Vue实例挂载$router
-+ 4、注册全局组件<router-view>和<router-link>, router-view组件通过当前url的hash值找到对应组件进行渲染
++ 3、给Vue实例挂载router实例
++ 4、注册全局组件<router-view>和<router-link>, router-view组件通过当前url的hash值找到对应组件进行渲染，router-link则渲染为a标签，如果是hash模式，
 + 5、通过变量保存当前url，并使数据变为响应式
 + 6、监听hashchange事件，hash改变时给保存入了
