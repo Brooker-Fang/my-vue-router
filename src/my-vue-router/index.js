@@ -6,12 +6,19 @@ export default class MyVueRouter {
      2、在Vue实例挂载 $router实例
      3、注册全局组件<router-view></router-view> 和 <router-link>
     */
+    // 判断是否已经执行过install  
+    if(MyVueRouter.installed) {
+      return
+    }
+    MyVueRouter.installed = true
     // 1 保存Vue构造函数
     VueConstructor = Vue
-    // 2、通过混入的方式，在Vue实例挂载 $router实例
+    // 2、通过全局混入的方式，在Vue实例挂载 $router实例
+    // install执行的时候，Vue还没有实例化，所以通过mixin。在Vue实例化时去挂载router
+    // 因为是全局混入，要判断是不是根实例，才需要挂载router
     Vue.mixin({
       beforeCreate() {
-        // 只有Vue实例 才需要挂载$router, 组件不需要执行
+        // 只有根实例 才需要挂载$router, 组件不需要执行
         if (this.$options.router) {
           console.log('this.$options.router==', this.$options.router)
           Vue.prototype.$router = this.$options.router
@@ -68,7 +75,6 @@ export default class MyVueRouter {
     this._data = VueConstructor.observable({
       currentUrl: '/',
     })
-    console.log(this._data)
     //  4、监听hashchange事件，hash改变时，同时改变currentUrl
     window.addEventListener('hashchange', () => {
       this._data.currentUrl = window.location.hash.slice(1)
