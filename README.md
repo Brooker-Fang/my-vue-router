@@ -31,13 +31,13 @@ const routes = [
     component: About,
   },
 ]
-// 创建路由对象
+// 实例化路由对象
 const router = new VueRouter({
   mode: 'hash',
   routes
 })
 ```
-### Vue实例上挂载router实例
+### 3、Vue实例上挂载router实例
 ```js
 // 实例化Vue时，在实例上注册router对象
 new Vue({
@@ -53,7 +53,8 @@ new Vue({
 ```
 ## 总结，VueRouter需要做以下这些事情
 + 1、实现install静态方法
++ 2、根据传入的路由配置，生成对应的路由映射
 + 3、给Vue实例挂载router实例
-+ 4、注册全局组件<router-view>和<router-link>, router-view组件通过当前url的hash值找到对应组件进行渲染，router-link则渲染为a标签，如果是hash模式，
-+ 5、通过变量保存当前url，并使数据变为响应式
-+ 6、监听hashchange事件，hash改变时给保存入了
++ 4、注册全局组件<router-view>和<router-link>, router-view组件通过当前url找到对应组件进行渲染，并且url改变时，重新渲染组件，router-link则渲染为a标签
++ 5、通过currentUrl变量保存当前url，并使数据变为响应式
++ 6、监听hashchange或popState事件，浏览器记录改变时重新保存变量
