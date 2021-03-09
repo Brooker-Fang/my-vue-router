@@ -35,6 +35,17 @@ export default class MyVueRouter {
           required: true,
         },
       },
+      methods: {
+        clickHandler(e) {
+          if (this.$router.$options.mode === 'history') {
+            // history 通过pushState改变地址，阻止默认行为
+            console.log('history模式')
+            history.pushState({}, '', this.to)
+            this.$router._data.currentUrl = this.to
+            e.preventDefault && e.preventDefault()
+          }
+        }
+      },
       render(h) {
         return h(
           'a',
@@ -42,6 +53,9 @@ export default class MyVueRouter {
             attrs: {
               href: '#' + this.to,
             },
+            on: {
+              click: this.clickHandler
+            }
           },
           this.$slots.default
         )
@@ -75,7 +89,20 @@ export default class MyVueRouter {
     this._data = VueConstructor.observable({
       currentUrl: '/',
     })
-    //  4、监听hashchange事件，hash改变时，同时改变currentUrl
+    /* 设置成响应式变量另外两种实现方式：
+       1、使用VueConstructor.util.definedReactive(this, 'current', '/')
+       2、使用新的Vue实例保存data。
+       this._data = new VueConstructor({
+         data: {
+           currentUrl: '/'
+           $$currentUrl: '/' // 加上两个$, 不会被代理到Vue实例上
+         }
+       })
+       然后通过this.$router._data.currentUrl访问
+    */
+
+    //  4、监听popstate或hashchange事件，hash改变时，同时改变currentUrl
+    // 如果浏览器支持popstate，则监听popstate，不支持使用hashchange
     window.addEventListener('hashchange', () => {
       this._data.currentUrl = window.location.hash.slice(1)
       console.log('this.currentUrl==', this._data.currentUrl)
