@@ -82,6 +82,7 @@ export default class MyVueRouter {
       beforeCreate() {
         // 只有根实例 才需要挂载$router, 组件不需要执行
         if (this.$options.router) {
+          // new Vue(options)时，已经把router对象保存到$options里，所以可以通过$options.router获取
           console.log('this.$options.router==', this.$options.router)
           Vue.prototype.$router = this.$options.router
         }
@@ -160,4 +161,13 @@ export default class MyVueRouter {
   }
 }
 ```
-## 实现思路
+## 源码实现思路
++ 因为Vue.use方法会调用install静态方法，并传入Vue的构造函数，所以可以在install方法保存Vue构造函数，使VueRouter内部也可以使用到Vue
++ 通过VueRouter.installed判断插件是否已经安装过，安装过的就无需要再次执行install
++ 通过Vue.mixin混入的方式，在Vue实例化时，在beforeCreate生命周期里，给Vue原型挂载router对象Vue.prototype.$router = router，这里只需要挂载根实例，组件则不需要挂载，通过$options.router判断是否是根实例
++ 注册router-view、router-link全局组件
++ router-view,根据当前url在路由表中找到对应组件，进行渲染。并且当前url改变时，重新渲染。可以通过一响应式变量保存当前url。
++ router-link渲染为a标签，如果是history模式，点击时通过history.pushState改变浏览器记录，并阻止a标签默认行为，防止页面刷新
++ 在VueRouter构造函数中，保存路由配置，并通过传入的路由表生成路由映射
++ 通过变量currentUrl保存当前url，并将currentUrl设置为Vue的响应式变量，让Vue帮助做依赖收集，router-view则通过依赖currentUrl去获取相对应组件，这样currentUrl改变时route-view会重新渲染
++ 监听浏览器popstate事件，url改变时，currentUrl重新设值（hash模式如果浏览器不支持popstate，则监听hashchange）

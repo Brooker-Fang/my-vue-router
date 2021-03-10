@@ -20,7 +20,7 @@ export default class MyVueRouter {
       beforeCreate() {
         // 只有根实例 才需要挂载$router, 组件不需要执行
         if (this.$options.router) {
-          console.log('this.$options.router==', this.$options.router)
+          // new Vue(options)时，已经把router对象保存到$options里，所以可以通过$options.route
           Vue.prototype.$router = this.$options.router
         }
         
