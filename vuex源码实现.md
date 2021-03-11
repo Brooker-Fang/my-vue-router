@@ -33,6 +33,14 @@ new Vue({
 ```
 ### 4、组件中使用
 ```js
+this.$store.state.count
+this.$store.state.getters.doubleCount
 this.$store.commit('add', 1)
 this.$store.dispatch('')
 ```
+
+## 总结，Vuex需要做以下这些事
++ 导出Store类
++ 实现install方法
++ 给Vue根实例挂载store对象
++ 

@@ -1,6 +1,6 @@
 import Vue from 'vue'
-// import Vuex from 'vuex'
-import Vuex from './my-store'
+import Vuex from 'vuex'
+// import Vuex from './my-store'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -19,4 +19,9 @@ export default new Vuex.Store({
       }, 1000)
     }
   },
+  getters: {
+    doubleCount(state) {
+      return state.count * 2
+    }
+  }
 })
