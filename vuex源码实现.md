@@ -22,6 +22,11 @@ export default new Vuex.Store({
       }, 1000)
     }
   },
+  getters: {
+    doubleCount(state) {
+      return state.count * 2
+    }
+  }
 })
 ```
 ### 3、挂载到Vue根实例中
