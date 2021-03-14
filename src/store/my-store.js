@@ -37,7 +37,7 @@ class Store {
     return this._vm._data.$$state
   }
   set state(v) {
-    new Error(`use store.replaceState() to explicit replace store state.`)
+    throw new Error(`use store.replaceState() to explicit replace store state.`)
   }
   // 这里需要使用箭头函数 防止this改变
   // 或者使用this.commit = this.commit.bind(this) 绑定this
